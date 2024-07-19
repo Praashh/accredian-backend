@@ -72,3 +72,56 @@ export const sendEmail = async (to: string) => {
         return { sucess: false };
     }
 } 
+
+export const sendReferralNotification = async (to: string | undefined, referralCode: string) => {
+    console.log(to);
+    const mailOptions = {
+        from: {
+            name: 'Accredian',
+            address: user,
+        },
+        to: to, 
+        subject: "Thank you for referring a new user to Accredian",
+        text: "Thank you for referring a new user to Accredian",
+        html: `
+            <html>
+            <head>
+                <style>
+                    .container {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin: 20px;
+                    }
+                    .content {
+                        font-size: 16px;
+                        color: #333;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="content">
+                        <h1>Referral Successful!</h1>
+                        <p>Dear User,</p>
+                        <p>Thank you for referring a new user to Accredian.</p>
+                        <p>We are excited to have them join our community.</p>
+                        <p>Your Referral Code is: <strong>${referralCode}</strong></p>
+                        <p>Share this code with your friends and help them get started with Accredian.</p>
+                        <p>If you have any questions or need assistance, please do not hesitate to contact our support team.</p>
+                        <p>Best regards,</p>
+                        <p>The Accredian Team</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `,
+    }
+    try {
+        console.log("sending email....");
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+}

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import { referralSchema } from "../zodSchema/referralSchema";
 import { prisma } from "../lib/prisma";
+import { sendReferralNotification } from "../lib/mail";
 
 async function generateUniqueCode(): Promise<string> {
     while (true) {
@@ -17,14 +18,14 @@ async function generateUniqueCode(): Promise<string> {
 
 export async function createReferral(req: Request, res: Response) {
     console.log("referral Body", req.body);
-    
+
     const { success } = referralSchema.safeParse(req.body);
     console.log(success)
     if (success) {
         try {
             const referralCode = await generateUniqueCode();
             console.log("referralCode", referralCode);
-            
+
             const newReferral = await prisma.referral.create({
                 data: {
                     referrerId: req.body.referrerId,
@@ -37,7 +38,8 @@ export async function createReferral(req: Request, res: Response) {
                 },
             });
             console.log("newReferral", newReferral);
-            
+            //  email notification
+            await sendReferralNotification(req.body.email, referralCode)
             res.status(201).json({ newReferral: newReferral, msg: "newReferral created successfully" });
 
         } catch (error) {
