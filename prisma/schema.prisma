@@ -13,8 +13,7 @@ model User {
   email     String    @unique
   name      String
   password  String  
-  referrals Referral[] @relation("Referrer")
-  referredBy Referral? @relation("Referee")
+  referrals   Referral[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -23,27 +22,29 @@ model Course {
   id          String    @id @default(cuid())
   name        String
   description String?
-  referrals   Referral[]
+  // referrals   Referral[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Referral {
-  id           String      @id @default(cuid())
-  referrerId   String
-  refereeId    String? @unique
-  courseId     String
-  status       ReferralStatus @default(PENDING)
-  referralCode String   @unique
-  referrer     User     @relation("Referrer", fields: [referrerId], references: [id])
-  referee      User?    @relation("Referee", fields: [refereeId], references: [id])
-  course       Course   @relation(fields: [courseId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id         String      @id @default(cuid())
+  name       String
+  email      String
+  referredAt DateTime    @default(now())
+  status     ReferralStatus @default(PENDING)
+  userId     String
+  referrerId String
+  referralCode String @unique
+  // courseId   String
+  user       User        @relation(fields: [userId], references: [id])
+  // course     Course      @relation(fields: [courseId], references: [id])
 }
+
 
 enum ReferralStatus {
   PENDING
   ACCEPTED
   COMPLETED
+  REJECTED
 }
