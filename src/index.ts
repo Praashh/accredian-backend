@@ -14,7 +14,8 @@ app.use(express.json());
 
 app.use("/api/v1", rootRouter);
 
-app.get("/", (req, res:Response) => {
+
+app.get("/", async (req, res:Response) => {
   res.send("Working Fine");
 })
 
