@@ -8,7 +8,7 @@ import { sendEmail } from "../lib/mail";
 
 export async function Register(req: Request, res: Response) {
   const { success } = userSchema.safeParse(req.body);
-  console.log(success)
+  // console.log(success)
   if (!success) {
     res.status(403).json({ msg: "Inputs are incorrect" });
   } else {
@@ -33,7 +33,7 @@ export async function Register(req: Request, res: Response) {
           password: hashedPassword,
         },
       });
-      console.log("newuser", newUser)
+      // console.log("newuser", newUser)
       const token = jwt.sign(
         { id: newUser.id },
         process.env.JWT_SECRET as string
@@ -41,7 +41,7 @@ export async function Register(req: Request, res: Response) {
 
       const mailResponse = await sendEmail(req.body.email);
       if (!mailResponse.sucess) return res.status(500).json({ msg: "Something went wrong with email!" });
-      console.log("user..... ", newUser)
+      // console.log("user..... ", newUser)
       res
         .status(201)
         .cookie("token", token, {
@@ -102,7 +102,7 @@ export async function Login(req: Request, res: Response) {
 
 export async function Logout(req: Request, res: Response) {
   const token = req.cookies.token;
-  console.log("Token from cookies:", token);
+  // console.log("Token from cookies:", token);
 
   res.status(200).cookie("token", "", {
     httpOnly: true,

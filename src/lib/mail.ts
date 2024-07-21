@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (to: string) => {
-    console.log(to);
+    // console.log(to);
     const mailOptions = {
         from: {
             name: 'Accredian',
@@ -64,7 +64,7 @@ export const sendEmail = async (to: string) => {
         `,
     }
     try {
-        console.log("sending email....")
+        // console.log("sending email....")
         await transporter.sendMail(mailOptions);
         return { sucess: true };
     } catch (error) {
@@ -74,7 +74,7 @@ export const sendEmail = async (to: string) => {
 } 
 
 export const sendReferralNotification = async (to: string | undefined, referralCode: string) => {
-    console.log(to);
+    // console.log(to);
     const mailOptions = {
         from: {
             name: 'Accredian',
@@ -117,7 +117,7 @@ export const sendReferralNotification = async (to: string | undefined, referralC
         `,
     }
     try {
-        console.log("sending email....");
+        // console.log("sending email....");
         await transporter.sendMail(mailOptions);
         return { success: true };
     } catch (error) {

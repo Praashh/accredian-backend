@@ -28,7 +28,7 @@ This is the backend of Accredian application.
 
 - Start the server.
 ```bash
-  npm run dev
+  npm start
 ```
 
 ## Authors
